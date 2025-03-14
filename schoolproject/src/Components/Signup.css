@@ -1,0 +1,108 @@
+.signup-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #1e2a38; /* Dark blue background */
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Logo and Title */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 50px;
+  height: auto;
+}
+
+h1 {
+  font-size: 28px;
+  color: white;
+}
+
+/* Signup Box */
+.signup-box {
+  width: 350px;
+  padding: 30px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #fff;
+  font-size: 22px;
+}
+
+.message {
+  color: #ffcc00;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Labels */
+label {
+  display: block;
+  text-align: left;
+  color: white;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+/* Input Fields */
+input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  background: rgba(240, 236, 236, 0.2);
+  color: white;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+input::placeholder {
+  color: #ddd;
+}
+
+/* Signup Button */
+button {
+  background: #007bff; /* Blue signup button */
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Space between text and icon */
+  transition: 0.3s;
+  width: 150px;
+  margin: 10px auto 0;
+}
+
+button:disabled {
+  background: #5a6268;
+  cursor: not-allowed;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+/* Signup Icon */
+.signup-icon {
+  margin-top: 1px;
+}

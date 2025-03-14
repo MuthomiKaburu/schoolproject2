@@ -1,0 +1,56 @@
+.reports-container {
+  background-color: #121212;
+  color: white;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.content {
+  max-width: 800px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+.chart-container {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: #1e1e1e;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.search-icon {
+  color: white;
+  margin-right: 10px;
+}
+
+input {
+  width: 100%;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+}
+
+.workout-list {
+  list-style: none;
+  padding: 0;
+}
+
+.workout-list li {
+  background: #222;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
