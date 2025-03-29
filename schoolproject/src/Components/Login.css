@@ -1,15 +1,16 @@
+/* Center the login box */
 .login-container {
-  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  background-color: #1e2a38; /* Dark blue background */
-  font-family: "Montserrat", sans-serif;
+  justify-content: center;
+  height: 100vh;
+  background-color: #1c1c3c; /* Dark blue background */
+  color: #ffffff; /* White text */
 }
 
-/* Logo and Title */
-.logo-container {
+/* Logo and title aligned side by side */
+.logo-title {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -23,77 +24,90 @@
 
 h1 {
   font-size: 28px;
-  color: white;
+  font-weight: bold;
 }
 
-/* Login Box */
+/* Login box */
 .login-box {
-  width: 350px;
+  background-color: #2a2a5a; /* Slightly lighter blue */
   padding: 30px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.1); /* Glass effect */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1); /* Subtle shadow */
+  width: 360px;
   text-align: center;
-  backdrop-filter: blur(10px);
 }
 
-h2 {
-  margin-bottom: 20px;
+/* Form labels */
+label {
+  display: block;
+  text-align: left;
+  font-size: 14px;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+/* Input fields (longer width) */
+input {
+  width: 100%;
+  padding: 14px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #3a3a6a;
   color: #fff;
-  font-size: 22px;
 }
 
+input:focus {
+  outline: none;
+  border: 2px solid #5c5cdb;
+}
+
+/* Login button */
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #5c5cdb;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background-color: #7373ff;
+}
+
+/* Error message */
 .error {
-  color: red;
+  color: #ff6b6b;
   font-size: 14px;
   margin-bottom: 10px;
 }
 
-/* Labels */
-label {
-  display: block;
-  text-align: left;
-  color: white;
-  font-size: 14px;
-  margin-bottom: 5px;
+/* Links section */
+.login-links {
+  margin-top: 15px;
 }
 
-/* Input Fields */
-input {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  text-align: center;
-  margin-bottom: 15px;
+/* Style links */
+.login-links p {
+  font-size: 13px;
+  margin: 5px 0;
 }
 
-input::placeholder {
-  color: #ddd;
+.login-links a {
+  color: #5c5cdb;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s ease;
 }
 
-/* Login Button */
-button {
-  background: #28a745; /* Green button */
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px; /* Space between text and icon */
-  transition: 0.3s;
-  width: 150px; /* Smaller button */
-  margin: 10px auto 0; /* Centered */
+.login-links a:hover {
+  text-decoration: underline;
+  color: #7373ff;
 }
-
-button:hover {
-  background: #218838;
-}
-

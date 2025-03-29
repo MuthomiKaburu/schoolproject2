@@ -1,51 +1,47 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../supabase";
-import "./Signup.css";
+import { useNavigate, Link } from "react-router-dom";
+import "./ForgotPassword.css";
 import fitnessLogo from "../assets/fitnesssmart.png";
-import { UserPlus } from "lucide-react"; // Import signup icon
+import { Mail } from "lucide-react"; // Email icon
 
-const Signup = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSignUp = async (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/update-password`,
     });
 
     if (error) {
       setMessage(error.message);
     } else {
-      setMessage("Check your email for the confirmation link.");
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000);
+      setMessage("Check your email for the password reset link.");
+      setTimeout(() => navigate("/login"), 5000);
     }
 
     setLoading(false);
   };
 
   return (
-    <div className="signup-container">
+    <div className="forgot-container">
       {/* Logo and TrainSmart title */}
       <div className="logo-container">
         <img src={fitnessLogo} alt="Fitness Smart Logo" className="logo" />
         <h1>TrainSmart</h1>
       </div>
 
-      <div className="signup-box">
-        <h2>Sign Up</h2>
+      <div className="forgot-box">
+        <h2>Forgot Password</h2>
         {message && <p className="message">{message}</p>}
-        <form onSubmit={handleSignUp}>
+        <form onSubmit={handleResetPassword}>
           <label>Email</label>
           <input
             type="email"
@@ -55,27 +51,18 @@ const Signup = () => {
             required
           />
 
-          <label>Password</label>
-          <input
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-
           <button type="submit" disabled={loading}>
-            <UserPlus size={18} className="signup-icon" /> {loading ? "Signing up..." : "Sign Up"}
+            <Mail size={18} className="icon" /> {loading ? "Sending..." : "Reset Password"}
           </button>
         </form>
 
         {/* Login Link */}
         <p>
-          Already have an account? <Link to="/login">Login</Link>
+          Remembered your password? <Link to="/login">Login</Link>
         </p>
       </div>
     </div>
   );
 };
 
-export default Signup;
+export default ForgotPassword;

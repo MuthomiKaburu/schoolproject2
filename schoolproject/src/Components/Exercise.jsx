@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { supabase } from "../supabase";
 import Navbar from "./Navbar";
+import { Dumbbell, Clock, Edit3, Calendar } from "lucide-react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Exercise.css";
 
 const Exercise = () => {
   const [category, setCategory] = useState("");
   const [exercise, setExercise] = useState("");
   const [workoutData, setWorkoutData] = useState({
+    workout_date: new Date().toISOString().split("T")[0], // Default to today's date
     reps: "",
     sets: "",
     duration: "",
@@ -18,26 +22,8 @@ const Exercise = () => {
   });
 
   const exercises = {
-    HIIT: [
-      "Jump Squats",
-      "Burpees",
-      "Mountain Climbers",
-      "High Knees",
-      "Plank Jacks",
-      "Lunges with Jumps",
-      "Push-Up to Shoulder Tap",
-      "Skater Jumps",
-    ],
-    "Gym Body Work": [
-      "Push-Ups",
-      "Squats",
-      "Lunges",
-      "Plank Hold",
-      "Dips",
-      "Pull-Ups",
-      "Jump Squats",
-      "Bicycle Crunches",
-    ],
+    HIIT: ["Jump Squats", "Burpees", "Mountain Climbers", "High Knees"],
+    "Gym Body Work": ["Push-Ups", "Squats", "Lunges", "Plank Hold"],
   };
 
   const handleInputChange = (e) => {
@@ -46,19 +32,15 @@ const Exercise = () => {
 
   const saveWorkout = async () => {
     const { error } = await supabase.from("workouts").insert([
-      {
-        workout_type: category,
-        exercise: exercise,
-        ...workoutData,
-      },
+      { workout_type: category, exercise: exercise, ...workoutData },
     ]);
 
     if (error) {
-      console.log("Error:", error);
-      alert("Error saving workout!");
+      toast.error("❌ Error saving workout!", { position: "top-right", autoClose: 3000 });
     } else {
-      alert("Workout saved successfully!");
+      toast.success("✅ Workout saved successfully!", { position: "top-right", autoClose: 3000 });
       setWorkoutData({
+        workout_date: new Date().toISOString().split("T")[0], // Reset to today's date
         reps: "",
         sets: "",
         duration: "",
@@ -74,6 +56,8 @@ const Exercise = () => {
   return (
     <div className="exercise-page">
       <Navbar />
+      <ToastContainer />
+
       <div className="exercise-container">
         <h2 className="title">Log Your Workout</h2>
 
@@ -91,9 +75,7 @@ const Exercise = () => {
               <select onChange={(e) => setExercise(e.target.value)} value={exercise}>
                 <option value="">Select</option>
                 {exercises[category]?.map((ex) => (
-                  <option key={ex} value={ex}>
-                    {ex}
-                  </option>
+                  <option key={ex} value={ex}>{ex}</option>
                 ))}
               </select>
             </>
@@ -101,19 +83,22 @@ const Exercise = () => {
         </div>
 
         <div className="workout-details">
-          <label>Repetitions (Reps):</label>
+          <label><Calendar size={18} /> Workout Date:</label>
+          <input type="date" name="workout_date" value={workoutData.workout_date} onChange={handleInputChange} />
+
+          <label><Dumbbell size={18} /> Reps:</label>
           <input type="number" name="reps" value={workoutData.reps} onChange={handleInputChange} />
 
-          <label>Sets:</label>
+          <label><Dumbbell size={18} /> Sets:</label>
           <input type="number" name="sets" value={workoutData.sets} onChange={handleInputChange} />
 
-          <label>Duration (Time in min):</label>
+          <label><Clock size={18} /> Duration (min):</label>
           <input type="text" name="duration" value={workoutData.duration} onChange={handleInputChange} />
 
-          <label>Weight Used(in kg):</label>
+          <label><Dumbbell size={18} /> Weight (kg):</label>
           <input type="text" name="weight" value={workoutData.weight} onChange={handleInputChange} />
 
-          <label>Break Duration(minutes):</label>
+          <label>Break Duration (min):</label>
           <input type="text" name="breakDuration" value={workoutData.breakDuration} onChange={handleInputChange} />
 
           <label>Number of Breaks:</label>
@@ -124,13 +109,14 @@ const Exercise = () => {
         </div>
 
         <div className="notes-section">
-          <label>Notes / Feedback:</label>
+          <label><Edit3 size={18} /> Notes:</label>
           <textarea name="notes" value={workoutData.notes} onChange={handleInputChange}></textarea>
         </div>
 
         <div className="button-container">
           <button className="save-button" onClick={saveWorkout}>Save</button>
           <button className="new-button" onClick={() => setWorkoutData({
+            workout_date: new Date().toISOString().split("T")[0],
             reps: "", sets: "", duration: "", weight: "", breakDuration: "", numBreaks: "", distance: "", notes: ""
           })}>
             New

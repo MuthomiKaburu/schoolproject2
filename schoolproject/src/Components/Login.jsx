@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase";
 import "./Login.css";
 import fitnessLogo from "../assets/fitnesssmart.png";
-import { LogIn } from "lucide-react"; // Import login icon
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,14 +22,14 @@ const Login = () => {
     if (error) {
       setError(error.message);
     } else {
-      navigate("/home"); // Redirect to Home after login
+      navigate("/home");
     }
   };
 
   return (
     <div className="login-container">
-      {/* Logo and TrainSmart title */}
-      <div className="logo-container">
+      {/* Logo and TrainSmart title (now side by side) */}
+      <div className="logo-title">
         <img src={fitnessLogo} alt="Fitness Smart Logo" className="logo" />
         <h1>TrainSmart</h1>
       </div>
@@ -57,10 +56,17 @@ const Login = () => {
             required
           />
 
-          <button type="submit">
-             Login
-          </button>
+          <button type="submit">Login</button>
         </form>
+
+        <div className="login-links">
+          <p>
+            Don't have an account? <a href="/signup">Sign Up</a>
+          </p>
+          <p>
+            <a href="/forgot-password">Forgot Password?</a>
+          </p>
+        </div>
       </div>
     </div>
   );

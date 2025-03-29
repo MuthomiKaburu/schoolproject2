@@ -1,91 +1,80 @@
 .exercise-page {
-  background-color: #1a2b44;
-  color: white;
-  font-family: "Montserrat", sans-serif;
+  background-color: #1b263b;
   min-height: 100vh;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 70px; /* Adjust for navbar */
 }
 
 .exercise-container {
+  background: #2a3b5a;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
   max-width: 600px;
-  margin: 50px auto;
-  background: #243b55;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .title {
   text-align: center;
-  font-size: 1.8rem;
+  font-size: 22px;
   font-weight: bold;
-  margin-bottom: 20px;
 }
 
-label {
+.dropdown-section, .workout-details, .notes-section {
+  background: #3b4c6b;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.dropdown-section label, .workout-details label, .notes-section label {
+  font-weight: bold;
   display: block;
-  margin-top: 12px;
-  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-select,
-input,
-textarea {
+.dropdown-section select, .workout-details input, .notes-section textarea {
   width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 6px;
-  border: none;
-  font-size: 1rem;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  background: white;
+  color: black;
 }
 
-textarea {
-  height: 90px;
+.notes-section textarea {
+  height: 80px;
   resize: none;
 }
 
-.dropdown-section {
-  margin-bottom: 15px;
-}
-
 .workout-details {
-  margin-bottom: 15px;
-}
-
-.notes-section {
-  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
 .button-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
 }
 
-.save-button {
-  background: #28a745;
+.save-button, .new-button {
+  background: #00aaff;
   color: white;
-  font-size: 1rem;
-  padding: 10px 20px;
   border: none;
-  border-radius: 6px;
+  padding: 10px;
   cursor: pointer;
+  width: 48%;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background 0.3s;
 }
 
-.save-button:hover {
-  background: #218838;
-}
-
-.new-button {
-  background: #35dc5f;
-  color: white;
-  font-size: 1rem;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.new-button:hover {
-  background: #c82333;
+.save-button:hover, .new-button:hover {
+  background: #0088cc;
 }

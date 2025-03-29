@@ -1,93 +1,127 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Chart, registerables } from "chart.js";
+import React, { useEffect, useState } from "react";
 import { supabase } from "../supabase";
-import Navbar from "./Navbar"; // Import Navbar
+import Navbar from "./Navbar";
+import { Line } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
 import "./Reports.css";
 
-Chart.register(...registerables);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const Reports = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [workoutHistory, setWorkoutHistory] = useState([]);
-  const chartRef = useRef(null);
-  const chartInstanceRef = useRef(null);
+  const [filteredWorkouts, setFilteredWorkouts] = useState([]);
+  const [workoutTypes, setWorkoutTypes] = useState(["HIIT", "Gym Body Work"]);
+  const [selectedWorkout, setSelectedWorkout] = useState("All Workouts");
+  const [alert, setAlert] = useState({ message: "", type: "" });
 
+  // Fetch workouts from Supabase
   useEffect(() => {
-    fetchWorkoutHistory();
+    const fetchWorkouts = async () => {
+      const { data, error } = await supabase.from("workouts").select("*");
+
+      if (error) {
+        setAlert({ message: "Error fetching workouts!", type: "error" });
+        console.error("Error fetching workouts:", error);
+      } else {
+        if (data.length === 0) {
+          setAlert({ message: "No workouts found!", type: "warning" });
+        } else {
+          setAlert({ message: "Workouts loaded successfully!", type: "success" });
+          console.log("Fetched Workouts:", data);
+        }
+
+        setWorkoutHistory(data);
+        setFilteredWorkouts(data);
+      }
+    };
+
+    fetchWorkouts();
   }, []);
 
-  const fetchWorkoutHistory = async () => {
-    try {
-      const { data, error } = await supabase.from("workouts").select("*");
-      if (error) {
-        console.error("Error fetching workout history:", error);
-        return;
-      }
-      setWorkoutHistory(data);
-      updateChart(data);
-    } catch (error) {
-      console.error("Error fetching workout history:", error);
+  // Handle dropdown selection
+  const handleWorkoutChange = (e) => {
+    const selectedType = e.target.value;
+    setSelectedWorkout(selectedType);
+
+    if (selectedType === "All Workouts") {
+      setFilteredWorkouts(workoutHistory);
+    } else {
+      setFilteredWorkouts(workoutHistory.filter((workout) => workout.workout_type === selectedType));
     }
   };
 
-  const updateChart = (data) => {
-    if (!chartRef.current) return;
-
-    if (chartInstanceRef.current) {
-      chartInstanceRef.current.destroy();
-    }
-
-    const ctx = chartRef.current.getContext("2d");
-    chartInstanceRef.current = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: data.map((workout) => workout.exercise),
-        datasets: [
-          {
-            label: "Workout Duration (minutes)",
-            data: data.map((workout) => workout.duration),
-            backgroundColor: "rgba(75, 192, 192, 0.6)",
-            borderColor: "rgba(75, 192, 192, 1)",
-            borderWidth: 1,
-          },
-        ],
+  // Prepare data for the graph
+  const progressData = {
+    labels: filteredWorkouts.map((workout) => new Date(workout.workout_date).toLocaleDateString()), // Updated column
+    datasets: [
+      {
+        label: "Workout Duration (min)",
+        data: filteredWorkouts.map((workout) => workout.duration),
+        borderColor: "blue",
+        backgroundColor: "rgba(0, 0, 255, 0.2)",
+        tension: 0.4,
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: { beginAtZero: true },
-        },
-      },
-    });
+    ],
   };
 
   return (
-    <div className="reports-container">
-      {/* Navbar */}
+    <div className="reports-page">
       <Navbar />
+      <h2 className="title">Workout Reports</h2>
 
-      {/* Sidebar */}
-      <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+      {/* Styled Alert Messages */}
+      {alert.message && <div className={`alert ${alert.type}`}>{alert.message}</div>}
 
-      {/* Main Content */}
-      <div className={`reports-content ${sidebarOpen ? "shifted" : ""}`}>
-        <h1 className="page-title">Workout Reports</h1>
+      {/* Dropdown Filter */}
+      <div className="filter-container">
+        <select className="dropdown" value={selectedWorkout} onChange={handleWorkoutChange}>
+          <option value="All Workouts">All Workouts</option>
+          {workoutTypes.map((type, index) => (
+            <option key={index} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
+      </div>
 
-        <div className="chart-container">
-          <canvas id="workoutChart" ref={chartRef}></canvas>
-        </div>
+      {/* Workout History Table */}
+      <table className="workout-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Exercise</th>
+            <th>Reps</th>
+            <th>Sets</th>
+            <th>Duration (min)</th>
+            <th>Weight (kg)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredWorkouts.length > 0 ? (
+            filteredWorkouts.map((workout) => (
+              <tr key={workout.id}>
+                <td>{new Date(workout.workout_date).toLocaleDateString()}</td> {/* Updated column */}
+                <td>{workout.workout_type}</td>
+                <td>{workout.exercise}</td>
+                <td>{workout.reps || "N/A"}</td>
+                <td>{workout.sets || "N/A"}</td>
+                <td>{workout.duration}</td>
+                <td>{workout.weight || "N/A"}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="7" className="no-data">No data available</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
 
-        <div className="history-section">
-          <h2>Workout History</h2>
-          <ul>
-            {workoutHistory.map((workout) => (
-              <li key={workout.id}>
-                {workout.exercise} - {workout.duration} minutes
-              </li>
-            ))}
-          </ul>
-        </div>
+      {/* Progress Chart */}
+      <div className="chart-container">
+        <h3>Workout Progress</h3>
+        {filteredWorkouts.length > 0 ? <Line data={progressData} /> : <p>No data for graph</p>}
       </div>
     </div>
   );
