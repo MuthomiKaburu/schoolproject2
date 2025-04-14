@@ -7,6 +7,7 @@ import Reports from "./Components/Reports";
 import Recommendation from "./Components/Recommendation";  
 import ForgotPassword from "./Components/ForgotPassword";
 import UpdatePassword from "./Components/UpdatePassword";
+import PrivateRoute from "./Components/PrivateRoute"; // ⬅️ Don't forget this
 
 function App() {
   return (
@@ -17,10 +18,12 @@ function App() {
         <Route path="/update-password" element={<UpdatePassword />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/exercise" element={<Exercise />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/recommendation" element={<Recommendation />} />
+
+        {/* Protected Routes */}
+        <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
+        <Route path="/exercise" element={<PrivateRoute><Exercise /></PrivateRoute>} />
+        <Route path="/reports" element={<PrivateRoute><Reports /></PrivateRoute>} />
+        <Route path="/recommendation" element={<PrivateRoute><Recommendation /></PrivateRoute>} />
       </Routes>
     </Router>
   );
