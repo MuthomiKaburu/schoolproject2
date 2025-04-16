@@ -1,0 +1,110 @@
+/* src/pages/UserProfile.css */
+
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 80px;
+    background-color: #d4edda;
+  }
+  
+  .user-profile-container {
+    max-width: 800px;
+    width: 100%;
+    padding: 2rem;
+    background: #d4edda;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+  }
+  
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    border: 2px solid #ccc;
+  }
+  
+  .profile-fields label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: black;
+  }
+  
+  .profile-fields input,
+  .profile-fields select,
+  .profile-fields textarea {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ffff;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  .profile-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+  }
+  
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .btn.edit {
+    background-color: red;
+  }
+  
+  .btn.save {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .alert {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+  }
+  
+  .alert.success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .alert.error {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  .name-avatar-row {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }

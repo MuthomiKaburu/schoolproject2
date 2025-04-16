@@ -1,10 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { LogOut, Dumbbell, Star, BarChart3, House } from "lucide-react";
+import { LogOut, Dumbbell, Star, BarChart3, House,User } from "lucide-react";
 import fitnessLogo from "../assets/fitnesssmart.png";
+import { userAuth } from "../contexts/AuthContext"; // import the context
 import "./navbar.css";
 
 const Navbar = () => {
+  const { signOut } = userAuth(); // get the signOut function
+
+  const handleLogout = () => {
+    signOut();
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-content">
@@ -17,9 +24,10 @@ const Navbar = () => {
         <ul className="navbar-links">
           <li><Link to="/home"><House /> Home</Link></li>
           <li><Link to="/exercise"><Dumbbell /> Exercise</Link></li>
-          <li><Link to="/recommendation"><Star /> Recommendation</Link></li>
+          <li><Link to="/chatbot"><Star /> Chatbot</Link></li>
           <li><Link to="/reports"><BarChart3 /> Report</Link></li>
-          <li><Link to="/login"><LogOut /> Logout</Link></li>
+          <li><Link to="/user-profile"><User /> Profile</Link></li>
+          <li><button onClick={handleLogout} className="logout-btn"><LogOut /> Logout</button></li>
         </ul>
       </div>
     </nav>

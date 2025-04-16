@@ -3,11 +3,16 @@ import * as tf from '@tensorflow/tfjs';
 import * as use from '@tensorflow-models/universal-sentence-encoder';
 import { Send, Dumbbell } from 'lucide-react';
 import { workoutPlans } from '../data/workoutData';
+import { targetTrainingData } from '../data/targetTrainingData';
+import { exerciseInstructions } from '../data/exerciseInstructions';
 
+import Navbar from './Navbar';
+import './ChatBot.css';
 
 export default function ChatBot() {
   const [messages, setMessages] = useState([
-    { text: "Hi! I'm your AI fitness assistant. Tell me your fitness goals!", isBot: true }
+    { text: "Hi! I'm your AI fitness assistant.How would you like to be assisted?😊", isBot: true },
+    { text: "Would you like to focus on improving a specific body part or overall fitness?", isBot: true }
   ]);
   const [input, setInput] = useState('');
   const [model, setModel] = useState(null);
@@ -35,18 +40,17 @@ export default function ChatBot() {
   };
 
   const findBestMatch = async (input) => {
-    if (!model) return workoutPlans[2]; // Default to general fitness if model not loaded
+    if (!model) return workoutPlans[2];
 
     const inputEmbedding = await model.embed([input.toLowerCase()]);
-    const planDescriptions = workoutPlans.map(plan => 
+    const planDescriptions = workoutPlans.map(plan =>
       `${plan.type.toLowerCase()} ${plan.description.toLowerCase()}`
     );
-    
+
     const planEmbeddings = await model.embed(planDescriptions);
-    
     const scores = tf.matMul(inputEmbedding, planEmbeddings.transpose());
     const bestMatchIndex = scores.argMax(1).dataSync()[0];
-    
+
     return workoutPlans[bestMatchIndex];
   };
 
@@ -58,13 +62,48 @@ export default function ChatBot() {
     setMessages(prev => [...prev, userMessage]);
     setInput('');
 
+    const lowerInput = input.toLowerCase();
+
+    // 1. Check for exercise instruction match
+    const matchedExercise = Object.keys(exerciseInstructions).find(ex =>
+      lowerInput.includes(ex.toLowerCase())
+    );
+
+    if (matchedExercise) {
+      const response = {
+        text: `Here's how to perform **${matchedExercise}**:\n\n${exerciseInstructions[matchedExercise]}`,
+        isBot: true
+      };
+      setTimeout(() => {
+        setMessages(prev => [...prev, response]);
+      }, 1000);
+      return;
+    }
+
+    // 2. Check for target training match
+    const matchedTarget = targetTrainingData.find(item =>
+      lowerInput.includes(item.target.toLowerCase())
+    );
+
+    if (matchedTarget) {
+      const response = {
+        text: `To improve your **${matchedTarget.target}**, here's a good set of exercises:\n\n${matchedTarget.exercises.join('\n')}`,
+        isBot: true
+      };
+      setTimeout(() => {
+        setMessages(prev => [...prev, response]);
+      }, 1000);
+      return;
+    }
+
+    // 3. Otherwise, match workout plan
     const bestMatch = await findBestMatch(input);
     const response = {
       text: `Based on your goals, I recommend this ${bestMatch.type} workout plan:\n\n` +
-            `${bestMatch.description}\n\n` +
-            `Exercises:\n${bestMatch.exercises.join('\n')}\n\n` +
-            `Duration: ${bestMatch.duration}\n` +
-            `Intensity Level: ${bestMatch.intensity}`,
+        `${bestMatch.description}\n\n` +
+        `Exercises:\n${bestMatch.exercises.join('\n')}\n\n` +
+        `Duration: ${bestMatch.duration}\n` +
+        `Intensity Level: ${bestMatch.intensity}`,
       isBot: true
     };
 
@@ -74,53 +113,42 @@ export default function ChatBot() {
   };
 
   return (
-    <div>
-      <div className="flex flex-col h-[600px] w-full max-w-2xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
-      <div className="bg-blue-600 p-4 flex items-center gap-2">
-        <Dumbbell className="text-white" size={24} />
-        <h2 className="text-xl font-bold text-white">Fitness Assistant</h2>
-      </div>
-      
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={flex `${message.isBot ? 'justify-start' : 'justify-end'}`}
-          >
-            <div
-              className={`max-w-[80%] p-3 rounded-lg ${
-                message.isBot
-                  ? 'bg-gray-100 text-gray-800'
-                  : 'bg-blue-600 text-white'
-              }`}
-            >
-              <pre className="whitespace-pre-wrap font-sans">{message.text}</pre>
-            </div>
+    <>
+      <div className="chatbot-wrapper">
+        <Navbar />
+        <div className="chatbot-container">
+          <div className="chatbot-header">
+            <Dumbbell className="chatbot-icon" size={24} />
+            <h2 className="chatbot-title">Fitness Assistant</h2>
           </div>
-        ))}
-        <div ref={messagesEndRef} />
-      </div>
 
-      <form onSubmit={handleSubmit} className="p-4 border-t">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Tell me your fitness goals..."
-            className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            type="submit"
-            className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <Send size={20} />
-          </button>
+          <div className="chatbot-messages">
+            {messages.map((message, index) => (
+              <div key={index} className={`chatbot-message ${message.isBot ? 'bot-message' : 'user-message'}`}>
+                <div className={`message-bubble ${message.isBot ? 'bot-bubble' : 'user-bubble'}`}>
+                  <pre className="message-text">{message.text}</pre>
+                </div>
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <form onSubmit={handleSubmit} className="chatbot-input-form">
+            <div className="input-container">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask anything "
+                className="chatbot-input"
+              />
+              <button type="submit" className="chatbot-send-button">
+                <Send size={18} />
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
-
-    </div>
-    
+      </div>
+    </>
   );
 }

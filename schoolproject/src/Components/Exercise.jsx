@@ -22,8 +22,8 @@ const Exercise = () => {
   });
 
   const exercises = {
-    HIIT: ["Jump Squats", "Burpees", "Mountain Climbers", "High Knees"],
-    "Gym Body Work": ["Push-Ups", "Squats", "Lunges", "Plank Hold"],
+    HIIT: ["Jump Squats", "Burpees", "Mountain Climbers", "High Knees","Knee lifts","Jumping jacks","Plank Crunches"],
+    "Gym Body Work": ["Push-Ups", "Squats", "Lunges", "Plank Hold","Bench press","Deadlifts","Pull-ups","Barbell squats"],
   };
 
   const handleInputChange = (e) => {
