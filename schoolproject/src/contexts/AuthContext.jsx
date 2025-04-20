@@ -50,12 +50,14 @@ export const AuthContextProvider = ({children}) => {
 
 
     //Sign Out
-    const signOut = () => {
-        const { error } = supabase.auth.signOut();
+    const signOut = async () => {
+        const { error } = await supabase.auth.signOut();
         if (error) {
-            console.error("there was an error: ", error);
+          console.error("there was an error: ", error);
+        } else {
+          window.location.href = "/login"; // forces refresh & ensures protection
         }
-    };
+      };
 
     return(
         <AuthContext.Provider value={{session, signUpNewUser, signInUser, signOut}}>

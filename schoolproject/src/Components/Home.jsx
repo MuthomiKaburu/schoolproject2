@@ -127,7 +127,7 @@ const Home = () => {
           </div>
         </div>
 
-        <p className="motivational-quote">"Every workout is progress. Keep pushing!"</p>
+        <p className="motivational-quote">"Every workout is progress. Keep pushing!💪"</p>
       </div>
     </div>
   );

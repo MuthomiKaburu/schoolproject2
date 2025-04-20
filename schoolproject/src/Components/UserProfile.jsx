@@ -14,6 +14,9 @@ export default function UserProfile() {
         gender: '',
         bio: '',
         avatar_url: '',
+        weight: '',
+        target_areas: '',
+        goal: '',
     });
     const [editing, setEditing] = useState(true);
     const [saved, setSaved] = useState(false);
@@ -39,6 +42,9 @@ export default function UserProfile() {
                         gender: p.gender || '',
                         bio: p.bio || '',
                         avatar_url: p.avatar_url || '',
+                        weight: p.weight || '',
+                        target_areas: p.target_areas || '',
+                        goal: p.goal || '',
                     });
                 }
             }
@@ -51,7 +57,6 @@ export default function UserProfile() {
         const file = e.target.files[0];
         if (!file || !user) return;
 
-        // Sanitize file name to prevent %20 issues
         const sanitizedFilename = file.name.replace(/\s+/g, '-');
         const filePath = `private/${user.id}/${sanitizedFilename}`;
 
@@ -62,7 +67,7 @@ export default function UserProfile() {
         if (!error) {
             const { data } = supabase.storage
                 .from('avatars')
-                .getPublicUrl(filePath); // OR use createSignedUrl if private
+                .getPublicUrl(filePath);
             setProfile((prev) => ({ ...prev, avatar_url: data.publicUrl }));
         } else {
             console.error('Upload error:', error.message);
@@ -80,6 +85,10 @@ export default function UserProfile() {
             gender: profile.gender,
             bio: profile.bio,
             avatar_url: profile.avatar_url,
+            weight: parseInt(profile.weight),
+            target_areas: profile.target_areas,
+            goal: profile.goal,
+            updated_at: new Date().toISOString(),
         });
 
         if (!error) {
@@ -156,6 +165,32 @@ export default function UserProfile() {
                         value={profile.bio}
                         disabled={!editing}
                         onChange={(e) => updateField('bio', e.target.value)}
+                    />
+
+                    <label>Weight (kg)</label>
+                    <input
+                        type="number"
+                        value={profile.weight}
+                        disabled={!editing}
+                        onChange={(e) => updateField('weight', e.target.value)}
+                    />
+
+                    <label>Target Areas</label>
+                    <input
+                        type="text"
+                        value={profile.target_areas}
+                        disabled={!editing}
+                        placeholder="e.g. abs, legs, arms"
+                        onChange={(e) => updateField('target_areas', e.target.value)}
+                    />
+
+                    <label>Goal</label>
+                    <input
+                        type="text"
+                        value={profile.goal}
+                        disabled={!editing}
+                        placeholder="e.g. lose 5kg, tone muscles"
+                        onChange={(e) => updateField('goal', e.target.value)}
                     />
                 </div>
 
