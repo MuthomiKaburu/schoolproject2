@@ -207,3 +207,57 @@ input {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+.weight-stats-chart {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap; /* Stack on small screens */
+}
+
+.weight-chart-box, .weight-history-table {
+  flex: 1 1 45%;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.weight-chart-box h3,
+.weight-history-table h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+/* Table styling */
+.weight-history-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.weight-history-table td {
+  color: #000; /* Black text */
+  padding: 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.weight-history-table th {
+  color: #333; /* Slightly dark gray for headers */
+}
+
+.weight-history-table tr {
+  background-color: #f5f5f5;
+}
+
+.weight-history-table tr:hover {
+  background-color: #eaeaea;
+}
+
+.weight_th{
+  padding-right: 170px;
+}

@@ -5,10 +5,22 @@ import { Send, Dumbbell } from 'lucide-react';
 import { workoutPlans } from '../data/workoutData';
 import { targetTrainingData } from '../data/targetTrainingData';
 import { exerciseInstructions } from '../data/exerciseInstructions';
+import weightGainData from '../data/weightGainData';
+import weightGainWorkouts from '../data/weightGainWorkout';
 import Navbar from './Navbar';
 import './ChatBot.css';
+import { supabase } from '../supabase';
+
+// 🆕 Nutrition and Recovery data (added)
+import  nutritionPlans  from '../data/nutritionPlans';
+import  recoveryTips  from '../data/recoveryTips';
+
+// 🔹 Added Stretching and Mental Wellness
+import stretchingData from '../data/stretchingData';
+import mentalWellnessData from '../data/mentalWellnessData';
 
 export default function ChatBot() {
+  const [userName, setUserName] = useState('');
   const [messages, setMessages] = useState([
     { text: "Hi! I'm your AI fitness assistant.How would you like to be assisted?😊", isBot: true },
     { text: "Would you like to focus on improving a specific body part or overall fitness?", isBot: true }
@@ -19,6 +31,23 @@ export default function ChatBot() {
 
   useEffect(() => {
     loadModel();
+  }, []);
+
+  useEffect(() => {
+    const fetchName = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('first_name')
+          .eq('id', user.id)
+          .single();
+        if (!error && data?.first_name) {
+          setUserName(data.first_name);
+        }
+      }
+    };
+    fetchName();
   }, []);
 
   useEffect(() => {
@@ -56,7 +85,16 @@ export default function ChatBot() {
   const generateBotResponse = async (userInput) => {
     const lowerInput = userInput.toLowerCase();
 
-    // 1. Specific exercise instruction
+    if (
+      lowerInput.includes('hello') ||
+      lowerInput.includes('hi') ||
+      lowerInput.includes('hey') ||
+      lowerInput.includes('good morning') ||
+      lowerInput.includes('good afternoon')
+    ) {
+      return `Hello${userName ? `, ${userName}` : ''}! 😊 I'm here to help with your fitness goals. How can I assist you today?`;
+    }
+
     const matchedExercise = Object.keys(exerciseInstructions).find(ex =>
       lowerInput.includes(ex.toLowerCase())
     );
@@ -64,7 +102,6 @@ export default function ChatBot() {
       return `Here's how to perform **${matchedExercise}**:\n\n${exerciseInstructions[matchedExercise]}`;
     }
 
-    // 2. Target body part training
     const matchedTarget = targetTrainingData.find(item =>
       lowerInput.includes(item.target.toLowerCase())
     );
@@ -72,7 +109,6 @@ export default function ChatBot() {
       return `To improve your **${matchedTarget.target}**, here's a good set of exercises:\n\n${matchedTarget.exercises.join('\n')}`;
     }
 
-    // 3. Quick workouts (e.g. "I have 15 minutes")
     if (
       lowerInput.includes('15 minutes') ||
       lowerInput.includes('10 minutes') ||
@@ -82,8 +118,7 @@ export default function ChatBot() {
       return "Here’s a quick full-body routine:\n- 30s Jumping Jacks\n- 30s Push-Ups\n- 30s Squats\n- 30s Mountain Climbers\nRepeat 3x for a quick burn!";
     }
 
-    // 4. General workout plan
-    if (
+    else if (
       lowerInput.includes('plan') ||
       lowerInput.includes('recommend') ||
       lowerInput.includes('routine') ||
@@ -94,27 +129,75 @@ export default function ChatBot() {
       return `Based on your goals, I recommend this ${bestMatch.type} workout plan:\n\n${bestMatch.description}\n\nExercises:\n${bestMatch.exercises.join('\n')}\n\nDuration: ${bestMatch.duration}\nIntensity Level: ${bestMatch.intensity}`;
     }
 
-    // 5. Tips and advice
-    if (
-      lowerInput.includes('tip') ||
-      lowerInput.includes('tips') ||
-      lowerInput.includes('advice')
+    else if (
+      lowerInput.includes('gain weight') ||
+      lowerInput.includes('weight gain') ||
+      lowerInput.includes('bulk') ||
+      lowerInput.includes('muscle')
     ) {
-      return "💡 Tip: Consistency beats intensity. A 20-minute workout done daily is more effective than an hour once a week!";
+      const plan = nutritionPlans.find(p => p.goal === 'weight_gain');
+      let response = "To gain weight and build muscle, here are some key tips:\n\n";
+      response += `💡 **Tips:**\n${weightGainData.tips.slice(0, 5).map(tip => `- ${tip}`).join('\n')}\n\n`;
+      response += `🥣 **Sample Breakfast:**\n${weightGainData.mealPlan.breakfast.slice(0, 2).join('\n')}\n\n`;
+      response += `💪 **Beginner Workout Plan:**\n${weightGainWorkouts.beginner.exercises.slice(0, 4).join('\n')}\n\n`;
+      response += `🍽️ **Meal Plan:**\n**${plan.planName}**\n${plan.description}\n\n**Breakfast:**\n${plan.meals.breakfast.join('\n')}\n\n**Lunch:**\n${plan.meals.lunch.join('\n')}\n\n**Dinner:**\n${plan.meals.dinner.join('\n')}\n\n**Snacks:**\n${plan.meals.snacks.join('\n')}\n\n`;
+      response += "Would you like advanced workouts or supplement suggestions?";
+      return response;
     }
 
-    // 6. Weight loss or fat burn
-    if (
+    else if (lowerInput.includes('advanced workout')) {
+      const adv = weightGainWorkouts.advanced;
+      return `💪 **${adv.level} Weight Gain Workout**:\n${adv.description}\n\n${adv.exercises.join('\n')}\n\nDuration: ${adv.duration}\nFrequency: ${adv.frequency}`;
+    }
+
+    else if (lowerInput.includes('supplement')) {
+      return `Here are useful supplements for weight gain:\n\n${weightGainData.supplements.map(s => `- ${s}`).join('\n')}`;
+    }
+
+    else if (lowerInput.includes('full meal') || lowerInput.includes('meal plan')) {
+      const { breakfast, lunch, dinner, snacks } = weightGainData.mealPlan;
+      return `🍽️ **Full Weight Gain Meal Plan**:\n\n**Breakfast:**\n${breakfast.join('\n')}\n\n**Lunch:**\n${lunch.join('\n')}\n\n**Dinner:**\n${dinner.join('\n')}\n\n**Snacks:**\n${snacks.join('\n')}`;
+    }
+
+    else if (
       lowerInput.includes('lose weight') ||
       lowerInput.includes('weight loss') ||
       lowerInput.includes('burn fat') ||
       lowerInput.includes('fat')
     ) {
-      return "To lose weight, combine HIIT workouts, a calorie deficit, and hydration. Would you like a fat-burn routine?";
+      const plan = nutritionPlans.find(p => p.goal === 'weight_loss');
+      return `To lose weight, here’s a recommended meal plan:\n\n**${plan.planName}**\n${plan.description}\n\n**Breakfast:**\n${plan.meals.breakfast.join('\n')}\n\n**Lunch:**\n${plan.meals.lunch.join('\n')}\n\n**Dinner:**\n${plan.meals.dinner.join('\n')}\n\n**Snacks:**\n${plan.meals.snacks.join('\n')}`;
     }
 
-    // 7. General fallback
-    if (
+    else if (
+      lowerInput.includes('recovery') ||
+      lowerInput.includes('tip') ||
+      lowerInput.includes('tips') ||
+      lowerInput.includes('advice')
+    ) {
+      const randomTip = recoveryTips[Math.floor(Math.random() * recoveryTips.length)];
+      return `💡 **${randomTip.title}**:\n${randomTip.tip}`;
+    }
+
+    else if (
+      lowerInput.includes('stretch') ||
+      lowerInput.includes('flexibility') ||
+      lowerInput.includes('warm up')
+    ) {
+      return `🧘 **Stretching Routine**:\n\n${stretchingData.routines.join('\n')}\n\n📝 Tip: ${stretchingData.tip}`;
+    }
+
+    else if (
+      lowerInput.includes('mental') ||
+      lowerInput.includes('stress') ||
+      lowerInput.includes('relax') ||
+      lowerInput.includes('anxiety') ||
+      lowerInput.includes('mind')
+    ) {
+      return `🧠 **Mental Wellness Tip:**\n${mentalWellnessData.tips[Math.floor(Math.random() * mentalWellnessData.tips.length)]}`;
+    }
+
+    else if (
       lowerInput.includes('fitness') ||
       lowerInput.includes('exercise') ||
       lowerInput.includes('healthy') ||
@@ -123,7 +206,7 @@ export default function ChatBot() {
       return "Do you want tips, a workout plan, or help with a specific body part?";
     }
 
-    return "I'm not sure how to help with that. Try asking things like 'Give me a workout plan', 'How to do push-ups', or 'Tips to lose weight'.";
+    return "I'm not sure how to help with that. Try asking things like 'Give me a workout plan', 'How to do push-ups', or 'Tips to gain weight'.";
   };
 
   const handleSubmit = async (e) => {
@@ -135,11 +218,7 @@ export default function ChatBot() {
     setInput('');
 
     const botText = await generateBotResponse(input);
-
-    const botMessage = {
-      text: botText,
-      isBot: true
-    };
+    const botMessage = { text: botText, isBot: true };
 
     setTimeout(() => {
       setMessages(prev => [...prev, botMessage]);
