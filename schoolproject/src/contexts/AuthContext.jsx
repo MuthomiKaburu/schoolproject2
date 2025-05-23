@@ -6,7 +6,7 @@ const AuthContext = createContext();
 export const AuthContextProvider = ({children}) => {
     const [session, setSession] = useState(undefined)
 
-    // Sign up
+    
     const signUpNewUser = async (email, password) => {
         const {data, error} = await supabase.auth.signUp ({
             email: email,
@@ -31,7 +31,7 @@ export const AuthContextProvider = ({children}) => {
                 console.error("sign in error occurred: ", error);
                 return {success: false, error: error.message};
             }
-            // console.log("sign-in success: ", data);
+
             return {success: true, data};
         } catch (error) {
             console.error("an error occured: ", error);

@@ -48,8 +48,9 @@ label {
 
 /* Input fields (longer width) */
 input {
-
-
+  width: 100%;
+  padding: 14px;
+  padding-right: 10px;
   margin-top: 5px;
   border: none;
   border-radius: 5px;
