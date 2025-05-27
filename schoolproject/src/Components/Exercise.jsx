@@ -30,28 +30,44 @@ const Exercise = () => {
     setWorkoutData({ ...workoutData, [e.target.name]: e.target.value });
   };
 
-  const saveWorkout = async () => {
-    const { error } = await supabase.from("workouts").insert([
-      { workout_type: category, exercise: exercise, ...workoutData },
-    ]);
+ const saveWorkout = async () => {
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
 
-    if (error) {
-      toast.error("❌ Error saving workout!", { position: "top-right", autoClose: 3000 });
-    } else {
-      toast.success("✅ Workout saved successfully!", { position: "top-right", autoClose: 3000 });
-      setWorkoutData({
-        workout_date: new Date().toISOString().split("T")[0], // Reset to today's date
-        reps: "",
-        sets: "",
-        duration: "",
-        weight: "",
-        breakDuration: "",
-        numBreaks: "",
-        distance: "",
-        notes: "",
-      });
-    }
-  };
+  if (userError || !user) {
+    toast.error("❌ Could not get user info");
+    return;
+  }
+
+  const { error } = await supabase.from("workouts").insert([
+    {
+      user_id: user.id,
+      workout_type: category,
+      exercise: exercise,
+      ...workoutData,
+    },
+  ]);
+
+  if (error) {
+    toast.error("❌ Error saving workout!", { position: "top-right", autoClose: 3000 });
+  } else {
+    toast.success("✅ Workout saved successfully!", { position: "top-right", autoClose: 3000 });
+    setWorkoutData({
+      workout_date: new Date().toISOString().split("T")[0],
+      reps: "",
+      sets: "",
+      duration: "",
+      weight: "",
+      breakDuration: "",
+      numBreaks: "",
+      distance: "",
+      notes: "",
+    });
+  }
+};
+
 
   return (
     <div className="exercise-page">
@@ -86,25 +102,25 @@ const Exercise = () => {
           <label><Calendar size={18} /> Workout Date:</label>
           <input type="date" name="workout_date" value={workoutData.workout_date} onChange={handleInputChange} />
 
-          <label><Dumbbell size={18} /> Reps:</label>
+          <label><Dumbbell size={18} /> Number of Reps:</label>
           <input type="number" name="reps" value={workoutData.reps} onChange={handleInputChange} />
 
-          <label><Dumbbell size={18} /> Sets:</label>
+          <label><Dumbbell size={18} />Number of Sets:</label>
           <input type="number" name="sets" value={workoutData.sets} onChange={handleInputChange} />
 
-          <label><Clock size={18} /> Duration (min):</label>
+          <label><Clock size={18} /> Duration of the workout in (min):</label>
           <input type="text" name="duration" value={workoutData.duration} onChange={handleInputChange} />
 
-          <label><Dumbbell size={18} /> Weight (kg):</label>
+          <label><Dumbbell size={18} /> Weight of dumbells/weights (kg):</label>
           <input type="text" name="weight" value={workoutData.weight} onChange={handleInputChange} />
 
           <label>Break Duration (min):</label>
           <input type="text" name="breakDuration" value={workoutData.breakDuration} onChange={handleInputChange} />
 
-          <label>Number of Breaks:</label>
+          <label>Number of Breaks taken in between or after workout:</label>
           <input type="number" name="numBreaks" value={workoutData.numBreaks} onChange={handleInputChange} />
 
-          <label>Distance (if applicable):</label>
+          <label>Distance taken  (if applicable):</label>
           <input type="text" name="distance" value={workoutData.distance} onChange={handleInputChange} />
         </div>
 

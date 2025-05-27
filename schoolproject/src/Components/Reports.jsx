@@ -16,24 +16,37 @@ const Reports = () => {
 
   // Fetch workouts from Supabase
   useEffect(() => {
-    const fetchWorkouts = async () => {
-      const { data, error } = await supabase.from("workouts").select("*");
+   const fetchWorkouts = async () => {
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
 
-      if (error) {
-        setAlert({ message: "Error fetching workouts!", type: "error" });
-        console.error("Error fetching workouts:", error);
-      } else {
-        if (data.length === 0) {
-          setAlert({ message: "No workouts found!", type: "warning" });
-        } else {
-          setAlert({ message: "Workouts loaded successfully!", type: "success" });
-          console.log("Fetched Workouts:", data);
-        }
+  if (userError || !user) {
+    setAlert({ message: "Could not get user info", type: "error" });
+    return;
+  }
 
-        setWorkoutHistory(data);
-        setFilteredWorkouts(data);
-      }
-    };
+  const { data, error } = await supabase
+    .from("workouts")
+    .select("*")
+    .eq("user_id", user.id); // Only fetch user's workouts
+
+  if (error) {
+    setAlert({ message: "Error fetching workouts!", type: "error" });
+    console.error("Error fetching workouts:", error);
+  } else {
+    if (data.length === 0) {
+      setAlert({ message: "No workouts found!", type: "warning" });
+    } else {
+      setAlert({ message: "Workouts loaded successfully!", type: "success" });
+    }
+
+    setWorkoutHistory(data);
+    setFilteredWorkouts(data);
+  }
+};
+
 
     fetchWorkouts();
   }, []);

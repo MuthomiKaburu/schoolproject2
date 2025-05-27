@@ -176,13 +176,34 @@ export default function UserProfile() {
                     />
 
                     <label>Target Areas</label>
-                    <input
-                        type="text"
+                    <select
                         value={profile.target_areas}
                         disabled={!editing}
-                        placeholder="e.g. abs, legs, arms"
                         onChange={(e) => updateField('target_areas', e.target.value)}
-                    />
+                    >
+                        <option value="">-- Select Target Area --</option>
+
+                        {/* Physical Fitness Areas */}
+                        <option value="Cardiovascular Endurance">Cardiovascular Endurance</option>
+                        <option value="Muscular Strength">Muscular Strength</option>
+                        <option value="Muscular Endurance">Muscular Endurance</option>
+                        <option value="Flexibility">Flexibility</option>
+
+                        {/* Body Composition Goals */}
+                        <option value="Weight Loss">Weight Loss</option>
+                        <option value="Muscle Gain">Muscle Gain</option>
+                        <option value="Toning & Definition">Toning & Definition</option>
+                        <option value="Body Recomposition">Body Recomposition</option>
+
+                        {/* Functional & Lifestyle Areas */}
+                        <option value="Posture Correction">Posture Correction</option>
+                        <option value="Injury Prevention">Injury Prevention</option>
+                        <option value="Rehabilitation & Recovery">Rehabilitation & Recovery</option>
+                        <option value="Sport-Specific Training">Sport-Specific Training</option>
+
+        
+                    </select>
+
 
                     <label>Goal</label>
                     <input

@@ -64,7 +64,7 @@
 }
 
 .save-button, .new-button {
-  background: #00aaff;
+  background: #339c59;
   color: white;
   border: none;
   padding: 10px;
@@ -76,5 +76,5 @@
 }
 
 .save-button:hover, .new-button:hover {
-  background: #0088cc;
+  background: #0e5b13;
 }
