@@ -1,7 +1,6 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { userAuth } from "../contexts/AuthContext"; // path to your AuthContext
+import { userAuth } from "../contexts/AuthContext"; 
 import "./Login.css";
 import fitnessLogo from "../assets/fitnesssmart.png";
 
@@ -11,7 +10,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { signInUser } = userAuth(); // using your AuthContext
+  const { signInUser } = userAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -35,7 +34,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* Logo and TrainSmart title (now side by side) */}
+
       <div className="logo-title">
         <img src={fitnessLogo} alt="Fitness Smart Logo" className="logo" />
         <h1>TrainSmart</h1>

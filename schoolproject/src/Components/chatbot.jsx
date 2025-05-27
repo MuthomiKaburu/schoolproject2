@@ -11,11 +11,10 @@ import Navbar from './Navbar';
 import './ChatBot.css';
 import { supabase } from '../supabase';
 
-// 🆕 Nutrition and Recovery data (added)
+
 import  nutritionPlans  from '../data/nutritionPlans';
 import  recoveryTips  from '../data/recoveryTips';
 
-// 🔹 Added Stretching and Mental Wellness
 import stretchingData from '../data/stretchingData';
 import mentalWellnessData from '../data/mentalWellnessData';
 

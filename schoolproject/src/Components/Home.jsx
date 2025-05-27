@@ -197,7 +197,7 @@ const Home = () => {
 
       <div className="content-wrapper">
         <div className="user-info">
-          {/* Name Box */}
+          
           <div className="info-box name-box">
             <User size={40} />
             {isEditingName ? (
@@ -227,7 +227,7 @@ const Home = () => {
             )}
           </div>
 
-          {/* Weight Box */}
+          
           <div className="info-box weight-box">
             <Scale size={40} />
             {isEditingWeight ? (
@@ -254,7 +254,7 @@ const Home = () => {
             )}
           </div>
 
-          {/* Goal Box */}
+          
           <div className="info-box goal-box">
             <Target size={40} />
             {isEditingGoal ? (

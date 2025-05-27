@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { userAuth } from "../contexts/AuthContext"; // Updated to use AuthContext
+import { userAuth } from "../contexts/AuthContext"; 
 import "./Signup.css";
 import fitnessLogo from "../assets/fitnesssmart.png";
-import { UserPlus } from "lucide-react"; // Signup icon
+import { UserPlus } from "lucide-react";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -13,7 +12,7 @@ const Signup = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const { signUpNewUser } = userAuth(); // Use your custom context
+  const { signUpNewUser } = userAuth(); 
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -25,7 +24,7 @@ const Signup = () => {
       if (result.success) {
         setMessage("Check your email for the confirmation link.");
         setTimeout(() => {
-          navigate("/login"); // Go to login after successful signup
+          navigate("/login"); 
         }, 3000);
       } else {
         setMessage(result.message || "Sign up failed");
@@ -39,7 +38,7 @@ const Signup = () => {
 
   return (
     <div className="signup-container">
-      {/* Logo and TrainSmart title */}
+
       <div className="logo-container">
         <img src={fitnessLogo} alt="Fitness Smart Logo" className="logo" />
         <h1>TrainSmart</h1>
@@ -73,7 +72,7 @@ const Signup = () => {
           </button>
         </form>
 
-        {/* Login Link */}
+  
         <p>
           Already have an account? <Link to="/login">Login</Link>
         </p>

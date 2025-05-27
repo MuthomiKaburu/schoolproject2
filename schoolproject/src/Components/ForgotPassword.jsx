@@ -3,7 +3,7 @@ import { supabase } from "../supabase";
 import { useNavigate, Link } from "react-router-dom";
 import "./ForgotPassword.css";
 import fitnessLogo from "../assets/fitnesssmart.png";
-import { Mail } from "lucide-react"; // Email icon
+import { Mail } from "lucide-react"; 
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");

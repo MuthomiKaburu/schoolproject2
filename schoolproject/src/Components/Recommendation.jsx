@@ -11,7 +11,7 @@ const Recommendations = () => {
     setMessages([...messages, { text: input, sender: "user" }]);
     setInput("");
     
-    // Placeholder response from chatbot
+
     setTimeout(() => {
       setMessages((prevMessages) => [
         ...prevMessages,

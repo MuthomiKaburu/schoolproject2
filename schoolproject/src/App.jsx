@@ -10,6 +10,7 @@ import PrivateRoute from "./Components/PrivateRoute";
 import ChatBot from './Components/chatbot'; 
 import UserProfile from "./Components/UserProfile"; 
 
+
 function App() {
   return (
     <Router>

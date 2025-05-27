@@ -64,7 +64,7 @@ const Reports = () => {
   };
 
   const progressData = {
-    labels: filteredWorkouts.map((workout) => new Date(workout.workout_date).toLocaleDateString()), // Updated column
+    labels: filteredWorkouts.map((workout) => new Date(workout.workout_date).toLocaleDateString()), 
     datasets: [
       {
         label: "Workout Duration (min)",
@@ -112,7 +112,7 @@ const Reports = () => {
           {filteredWorkouts.length > 0 ? (
             filteredWorkouts.map((workout) => (
               <tr key={workout.id}>
-                <td>{new Date(workout.workout_date).toLocaleDateString()}</td> {/* Updated column */}
+                <td>{new Date(workout.workout_date).toLocaleDateString()}</td> 
                 <td>{workout.workout_type}</td>
                 <td>{workout.exercise}</td>
                 <td>{workout.reps || "N/A"}</td>

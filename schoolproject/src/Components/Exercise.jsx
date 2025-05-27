@@ -10,7 +10,7 @@ const Exercise = () => {
   const [category, setCategory] = useState("");
   const [exercise, setExercise] = useState("");
   const [workoutData, setWorkoutData] = useState({
-    workout_date: new Date().toISOString().split("T")[0], // Default to today's date
+    workout_date: new Date().toISOString().split("T")[0], 
     reps: "",
     sets: "",
     duration: "",
