@@ -14,7 +14,7 @@ const Reports = () => {
   const [selectedWorkout, setSelectedWorkout] = useState("All Workouts");
   const [alert, setAlert] = useState({ message: "", type: "" });
 
-  // Fetch workouts from Supabase
+
   useEffect(() => {
    const fetchWorkouts = async () => {
   const {
@@ -30,7 +30,7 @@ const Reports = () => {
   const { data, error } = await supabase
     .from("workouts")
     .select("*")
-    .eq("user_id", user.id); // Only fetch user's workouts
+    .eq("user_id", user.id);
 
   if (error) {
     setAlert({ message: "Error fetching workouts!", type: "error" });
@@ -51,7 +51,7 @@ const Reports = () => {
     fetchWorkouts();
   }, []);
 
-  // Handle dropdown selection
+
   const handleWorkoutChange = (e) => {
     const selectedType = e.target.value;
     setSelectedWorkout(selectedType);
@@ -63,7 +63,6 @@ const Reports = () => {
     }
   };
 
-  // Prepare data for the graph
   const progressData = {
     labels: filteredWorkouts.map((workout) => new Date(workout.workout_date).toLocaleDateString()), // Updated column
     datasets: [
@@ -82,10 +81,9 @@ const Reports = () => {
       <Navbar />
       <h2 className="title">Workout Reports</h2>
 
-      {/* Styled Alert Messages */}
+
       {alert.message && <div className={`alert ${alert.type}`}>{alert.message}</div>}
 
-      {/* Dropdown Filter */}
       <div className="filter-container">
         <select className="dropdown" value={selectedWorkout} onChange={handleWorkoutChange}>
           <option value="All Workouts">All Workouts</option>
@@ -97,7 +95,7 @@ const Reports = () => {
         </select>
       </div>
 
-      {/* Workout History Table */}
+  
       <table className="workout-table">
         <thead>
           <tr>
@@ -131,7 +129,7 @@ const Reports = () => {
         </tbody>
       </table>
 
-      {/* Progress Chart */}
+
       <div className="chart-container">
         <h3>Workout Progress</h3>
         {filteredWorkouts.length > 0 ? <Line data={progressData} /> : <p>No data for graph</p>}

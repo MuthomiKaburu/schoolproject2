@@ -32,7 +32,6 @@ const ForgotPassword = () => {
 
   return (
     <div className="forgot-container">
-      {/* Logo and TrainSmart title */}
       <div className="logo-container">
         <img src={fitnessLogo} alt="Fitness Smart Logo" className="logo" />
         <h1>TrainSmart</h1>
@@ -56,7 +55,7 @@ const ForgotPassword = () => {
           </button>
         </form>
 
-        {/* Login Link */}
+
         <p>
           Remembered your password? <Link to="/login">Login</Link>
         </p>

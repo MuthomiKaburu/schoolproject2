@@ -1,4 +1,4 @@
-/* Full page wrapper */
+
 .chatbot-wrapper {
   background: #f0f4f8;
   min-height: 100vh;
@@ -9,7 +9,7 @@
   align-items: center;
 }
 
-/* Main chatbot box */
+
 .chatbot-container {
   display: flex;
   flex-direction: column;
@@ -23,7 +23,7 @@
   padding-top: 47px;
 }
 
-/* Header section */
+
 .chatbot-header {
   background-color: #2563eb;
   padding: 16px;
@@ -42,7 +42,7 @@
   color: white;
 }
 
-/* Messages area */
+
 .chatbot-messages {
   flex: 1;
   overflow-y: auto;
@@ -50,14 +50,14 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  word-break: break-word;          /* Ensures long words break */
-  white-space: normal;             /* Prevents horizontal scroll */
+  word-break: break-word;          
+  white-space: normal;             
 }
 
-/* Individual messages */
+
 .chatbot-message {
   display: flex;
-  flex-wrap: wrap; /* Allows wrapping of long messages */
+  flex-wrap: wrap; 
 }
 
 .bot-message {
@@ -69,12 +69,12 @@
 }
 
 .message-bubble {
-  max-width: 80%; /* Prevent full width bubbles */
+  max-width: 80%; 
   padding: 12px 16px;
   border-radius: 10px;
   font-size: 0.95rem;
-  white-space: pre-wrap;  /* Preserves line breaks and wraps */
-  word-wrap: break-word;  /* Forces long words to wrap */
+  white-space: pre-wrap;  
+  word-wrap: break-word; 
   overflow-wrap: break-word;
 }
 
@@ -88,7 +88,7 @@
   color: white;
 }
 
-/* Input form styling */
+
 .chatbot-input-form {
   padding: 16px;
   border-top: 1px solid #e5e7eb;
@@ -101,7 +101,7 @@
   align-items: center;
 }
 
-/* Fix: Make input field longer */
+
 .chatbot-input {
   flex: 1;
   padding: 14px 18px;
@@ -111,10 +111,9 @@
   outline: none;
   background-color: rgb(253, 251, 251);
   color: rgb(42, 39, 173);
-  min-width: 0; /* Fix for flex shrinking */
+  min-width: 0; 
 }
 
-/* Adjust send button */
 .chatbot-send-button {
   background-color: #3b82f6;
   color: white;
