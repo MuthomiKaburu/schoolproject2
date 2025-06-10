@@ -125,7 +125,7 @@ export default function ChatBot() {
       lowerInput.includes('program')
     ) {
       const bestMatch = await findBestMatch(userInput);
-      return `Based on your goals, I recommend this ${bestMatch.type} workout plan:\n\n${bestMatch.description}\n\nExercises:\n${bestMatch.exercises.join('\n')}\n\nDuration: ${bestMatch.duration}\nIntensity Level: ${bestMatch.intensity}`;
+      return ` I recommend this ${bestMatch.type} workout plan:\n\n${bestMatch.description}\n\nExercises:\n${bestMatch.exercises.join('\n')}\n\nDuration: ${bestMatch.duration}\nIntensity Level: ${bestMatch.intensity}`;
     }
 
     else if (

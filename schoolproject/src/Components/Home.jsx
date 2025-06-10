@@ -6,7 +6,7 @@ import {
   Line
 } from "react-chartjs-2";
 import {Chart as ChartJS, LineElement,PointElement,CategoryScale,LinearScale,Tooltip,Legend} from "chart.js";
-import "./home.css";
+import "./Home.css";
 
 ChartJS.register(
   LineElement,
