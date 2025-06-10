@@ -8,7 +8,7 @@ import { exerciseInstructions } from '../data/exerciseInstructions';
 import weightGainData from '../data/weightGainData';
 import weightGainWorkouts from '../data/weightGainWorkout';
 import Navbar from './Navbar';
-import './ChatBot.css';
+import './Chatbot.css';
 import { supabase } from '../supabase';
 
 
