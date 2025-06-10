@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { LogOut, Dumbbell, Star, BarChart3, House,User ,Bot} from "lucide-react";
 import fitnessLogo from "../assets/fitnesssmart.png";
 import { userAuth } from "../contexts/AuthContext"; 
-import "./navbar.css";
+import "./Navbar.css";
 
 const Navbar = () => {
   const { signOut } = userAuth();
